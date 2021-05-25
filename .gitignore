@@ -1,0 +1,11 @@
+# Scrapy stuff:
+.scrapy
+/.gitattributes
+/glove.GB.100d.txt
+/Tweets_Cleaning_and_EDA.ipynb
+/Corona_NLP_test.csv
+/Corona_NLP_train.csv
+/train_data.csv
+/test_data.csv
+/modelling.py
+
