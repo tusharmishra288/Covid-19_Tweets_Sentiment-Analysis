@@ -12,7 +12,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-model = tf.keras.models.load_model('saved_model')
+model = tf.keras.models.load_model('saved_model.h5')
 
 with open('tokenizer.pickle', 'rb') as handle:
     tokenizer = pickle.load(handle)
@@ -63,5 +63,3 @@ def main():
             
 if __name__ == '__main__':
       main()
-          
-  
