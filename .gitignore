@@ -1,7 +1,7 @@
-\Corona_NLP_train.csv
-\Corona_NLP_test.csv
-\glove.6B.100d.txt
-\modelling.py
-\train_data.csv
-\test_data.csv
-\Tweets_Cleaning_and_EDA.ipynb
+.Corona_NLP_train.csv
+.Corona_NLP_test.csv
+.glove.6B.100d.txt
+.modelling.py
+.train_data.csv
+.test_data.csv
+.Tweets_Cleaning_and_EDA.ipynb
