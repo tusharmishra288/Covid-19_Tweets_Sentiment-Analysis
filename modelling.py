@@ -98,29 +98,3 @@ print(classification_report(np.array(y_test),pred,target_names=['Negative','Neut
 
 #saving the model as hdf5 file
 model.save('saved_model')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
