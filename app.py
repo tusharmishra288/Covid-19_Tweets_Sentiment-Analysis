@@ -22,7 +22,7 @@ def preprocessing(input_text):
     return review_text
 
 
-@st.cache()#function for generating predictions
+@st.cache(show_spinner=True)
 def prediction(text):
         model = tf.keras.models.load_model('saved_model.h5')    
         with open('tokenizer.pickle', 'rb') as handle:
@@ -47,18 +47,21 @@ def main():
     st.markdown(html_temp,unsafe_allow_html=True)
     
     text=st.text_input('Enter Tweet')
-    
+       
     if st.button('Predict'):
-        pred_value,score=prediction(text)
-        if pred_value==2:
-            st.success("Sentiment is Positive")
-            st.success("Score: {}".format(round(score)))
-        elif pred_value==1:
-            st.info("Sentiment is Neutral")
-            st.info("Score: {}".format(round(score)))
+        if text:
+            pred_value,score=prediction(text)
+            if pred_value==2:
+                st.success("Sentiment is Positive")
+                st.success("Score: {}".format(round(score)))
+            elif pred_value==1:
+                st.info("Sentiment is Neutral")
+                st.info("Score: {}".format(round(score)))
+            else:
+                st.error("Sentiment is Negative")
+                st.error("Score: {}".format(round(score)))
         else:
-            st.error("Sentiment is Negative")
-            st.error("Score: {}".format(round(score)))
-            
+           st.error("Invalid input")
+         
 if __name__ == '__main__':
       main()
