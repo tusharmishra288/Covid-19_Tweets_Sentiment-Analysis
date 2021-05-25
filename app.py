@@ -1,10 +1,6 @@
 import streamlit as st
 import numpy as np
 import tensorflow as tf
-config = tf.compat.v1.ConfigProto(gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=1.0))
-config.gpu_options.allow_growth = True
-session = tf.compat.v1.Session(config=config)
-tf.compat.v1.keras.backend.set_session(session)
 import contractions
 import re
 import pickle
@@ -12,11 +8,6 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-model = tf.keras.models.load_model('saved_model.h5')
-
-with open('tokenizer.pickle', 'rb') as handle:
-    tokenizer = pickle.load(handle)
-    
 #function for data cleaning
 def preprocessing(input_text):
     remove_url=re.sub(r'http\S+',' ',input_text) #removing the url
@@ -30,14 +21,20 @@ def preprocessing(input_text):
     review_text = " ".join(lemmatized_words)
     return review_text
 
-@st.cache()
+
+@st.cache()#function for generating predictions
 def prediction(text):
+        model = tf.keras.models.load_model('saved_model.h5')    
+        with open('tokenizer.pickle', 'rb') as handle:
+               tokenizer = pickle.load(handle)
         cleaned_text=preprocessing(text)
         text_sequences=tokenizer.texts_to_sequences([cleaned_text])
         text_padded = pad_sequences(text_sequences, maxlen=252,padding='post')#252 as used during training of model
         pred=np.argmax(model.predict(text_padded))
-        return pred
+        score=np.max(model.predict(text_padded))*100
+        return pred,score
     
+
 def main():
     # front end elements of the web page 
     html_temp = """ 
@@ -52,14 +49,16 @@ def main():
     text=st.text_input('Enter Tweet')
     
     if st.button('Predict'):
-        st.spinner(text='Analyzing Sentiment')
-        pred_value=prediction(text)
+        pred_value,score=prediction(text)
         if pred_value==2:
             st.success("Sentiment is Positive")
+            st.success("Score: {}".format(round(score)))
         elif pred_value==1:
             st.info("Sentiment is Neutral")
+            st.info("Score: {}".format(round(score)))
         else:
             st.error("Sentiment is Negative")
+            st.error("Score: {}".format(round(score)))
             
 if __name__ == '__main__':
       main()
